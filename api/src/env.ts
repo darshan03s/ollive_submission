@@ -9,7 +9,9 @@ export const env = createEnv({
 
     BASE_URL: z.url(),
 
-    CORS_ORIGIN: z.url()
+    CORS_ORIGIN: z.url(),
+
+    DATABASE_URL: z.url()
   },
 
   runtimeEnv: process.env,
