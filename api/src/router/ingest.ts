@@ -1,9 +1,11 @@
 import { Router } from 'express'
 import { InferenceCompletedEventSchema } from '../zod-schemas/inference.js'
+import { db } from '../db/index.js'
+import { inferenceEvents } from '../db/schema.js'
 
 export const ingestRouter: Router = Router()
 
-ingestRouter.post('/', (req, res) => {
+ingestRouter.post('/', async (req, res) => {
   const result = InferenceCompletedEventSchema.safeParse(req.body)
 
   if (!result.success) {
@@ -12,6 +14,8 @@ ingestRouter.post('/', (req, res) => {
     return
   }
 
-  console.log('[ingest] Event received:', result.data)
+  await db.insert(inferenceEvents).values(result.data)
+
+  console.log('[ingest] Event inserted')
   res.status(200).json({ code: 'SUCCESS' })
 })
