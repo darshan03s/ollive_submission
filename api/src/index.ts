@@ -3,6 +3,7 @@ import cors from 'cors'
 import morgan from 'morgan'
 import 'dotenv/config'
 import { healthRouter } from './router/health.js'
+import { ingestRouter } from './router/ingest.js'
 import { ApiError } from './errors.js'
 import { env } from './env.js'
 
@@ -26,6 +27,7 @@ app.get('/', (_req: Request, res: Response) => {
 })
 
 app.use('/health', healthRouter)
+app.use('/ingest', ingestRouter)
 
 app.use((error: unknown, _req: Request, res: Response, _next: NextFunction) => {
   if (error instanceof ApiError) {
