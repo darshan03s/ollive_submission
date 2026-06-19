@@ -11,7 +11,13 @@ export const env = createEnv({
 
     CORS_ORIGIN: z.url(),
 
-    DATABASE_URL: z.url()
+    DATABASE_URL: z.url(),
+
+    REDIS_URL: z.url(),
+
+    REDIS_HOST: z.string(),
+
+    REDIS_PORT: z.coerce.number()
   },
 
   runtimeEnv: process.env,

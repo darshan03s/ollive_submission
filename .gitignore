@@ -5,3 +5,4 @@ dist/
 .context
 AGENTS.md
 task.pdf
+dump.rdb
