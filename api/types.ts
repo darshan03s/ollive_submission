@@ -1,15 +1,4 @@
-type InferenceCompletedEvent = {
-  conversationId: string
+import { z } from 'zod'
+import { InferenceCompletedEventSchema } from './src/zod-schemas/inference'
 
-  provider: string
-  model: string
-
-  latencyMs: number
-
-  inputTokens: number
-  outputTokens: number
-
-  status: 'success' | 'error'
-
-  timestamp: string
-}
+type InferenceCompletedEvent = z.infer<typeof InferenceCompletedEventSchema>
