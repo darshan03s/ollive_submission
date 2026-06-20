@@ -7,14 +7,11 @@ import PromptInputComp from '@/components/prompt-input-comp'
 import { useCallback, useState } from 'react'
 import { useChat } from '@ai-sdk/react'
 import ConversationComp from '@/components/conversation-comp'
-import { useSession } from '@clerk/nextjs'
-import { toast } from 'sonner'
 
 const Page = () => {
   const [model, setModel] = useState<Model['model']>(models[0].model)
   const [modelSelectorOpen, setModelSelectorOpen] = useState(false)
   const { messages, sendMessage, status } = useChat()
-  const { isSignedIn } = useSession()
   const selectedModelData = models.find((m) => m.model === model)!
 
   const handleModelSelect = useCallback((selected: Model['model']) => {
@@ -23,11 +20,6 @@ const Page = () => {
   }, [])
 
   const handleSubmit = (message: PromptInputMessage) => {
-    if (!isSignedIn) {
-      toast.error('Please sign in to continue')
-      return
-    }
-
     const hasText = Boolean(message.text)
     const hasAttachments = Boolean(message.files?.length)
 
