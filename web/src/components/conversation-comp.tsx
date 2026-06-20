@@ -1,3 +1,5 @@
+'use client'
+
 import { UIMessage } from 'ai'
 import { cn } from '@/lib/utils'
 import {
@@ -37,7 +39,11 @@ const ConversationComp = ({
               {message.parts.map((part, i) => {
                 switch (part.type) {
                   case 'text':
-                    return <MessageResponse key={`${message.id}-${i}`}>{part.text}</MessageResponse>
+                    return (
+                      <MessageResponse mode="streaming" key={`${message.id}-${i}`}>
+                        {part.text}
+                      </MessageResponse>
+                    )
                   default:
                     return null
                 }
