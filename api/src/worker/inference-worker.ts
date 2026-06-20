@@ -16,10 +16,10 @@ export const inferenceWorker = new Worker(
   }
 )
 
-inferenceWorker.on('completed', (job) => {
-  console.log(`Job ${job.id} completed`)
+inferenceWorker.on('completed', () => {
+  console.log(`Job completed`)
 })
 
-inferenceWorker.on('failed', (job, err) => {
-  console.error(`Job ${job?.id} failed`, err)
+inferenceWorker.on('failed', (err) => {
+  console.error(`Job failed with error: ${err}`)
 })
