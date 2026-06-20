@@ -36,7 +36,8 @@ const Page = () => {
       { text: message.text },
       {
         body: {
-          model: selectedModelData.model
+          model: selectedModelData.model,
+          userInput: message.text
         }
       }
     )
