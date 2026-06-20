@@ -46,9 +46,13 @@ const Page = () => {
   }
 
   return (
-    <Main className="max-w-3xl mx-auto flex flex-col py-4">
-      <ConversationComp messages={messages} />
-      <div className="h-1/4">
+    <Main className="flex flex-col h-[calc(100vh-var(--header-height))]">
+      <div className="flex-1 overflow-y-auto">
+        <div className="max-w-3xl mx-auto py-4">
+          <ConversationComp messages={messages} />
+        </div>
+      </div>
+      <div className="max-w-3xl w-full mx-auto px-4 pb-4 bg-background">
         <PromptInputComp
           handleSubmit={handleSubmit}
           handleModelSelect={handleModelSelect}
