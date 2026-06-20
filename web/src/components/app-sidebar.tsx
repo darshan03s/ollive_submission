@@ -6,6 +6,7 @@ import {
   SidebarTrigger
 } from '@/components/ui/sidebar'
 import Brand from './brand'
+import Coversations from './coversations'
 
 export function AppSidebar() {
   return (
@@ -14,7 +15,9 @@ export function AppSidebar() {
         <SidebarTrigger />
         <Brand />
       </SidebarHeader>
-      <SidebarContent></SidebarContent>
+      <SidebarContent>
+        <Coversations />
+      </SidebarContent>
       <SidebarFooter />
     </Sidebar>
   )
