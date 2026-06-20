@@ -6,12 +6,17 @@ import Main from '@/components/main'
 import PromptInputComp from '@/components/prompt-input-comp'
 import { useCallback, useState } from 'react'
 import { useChat } from '@ai-sdk/react'
+import { DefaultChatTransport } from 'ai'
 import ConversationComp from '@/components/conversation-comp'
+
+const chatTransport = new DefaultChatTransport({ api: '/api/chat' })
 
 const Page = () => {
   const [model, setModel] = useState<Model['model']>(models[0].model)
   const [modelSelectorOpen, setModelSelectorOpen] = useState(false)
-  const { messages, sendMessage, status } = useChat()
+  const { messages, sendMessage, status } = useChat({
+    transport: chatTransport
+  })
   const selectedModelData = models.find((m) => m.model === model)!
 
   const handleModelSelect = useCallback((selected: Model['model']) => {
