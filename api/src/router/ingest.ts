@@ -1,7 +1,5 @@
 import { Router } from 'express'
 import { InferenceCompletedEventSchema } from '../zod-schemas/inference.js'
-import { db } from '../db/index.js'
-import { inferenceEvents } from '../db/schema.js'
 import { inferenceQueue } from '@/worker/queue.js'
 
 export const ingestRouter: Router = Router()

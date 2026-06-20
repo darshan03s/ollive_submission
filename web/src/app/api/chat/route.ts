@@ -1,3 +1,4 @@
+import { env } from '@/env'
 import { streamText, UIMessage, convertToModelMessages, LanguageModel } from 'ai'
 
 export async function POST(req: Request) {
@@ -12,9 +13,9 @@ export async function POST(req: Request) {
   const logObj = {
     provider: '',
     model: '',
-    inputTokens: undefined as number | undefined,
-    outputTokens: undefined as number | undefined,
-    totalTokens: undefined as number | undefined,
+    inputTokens: null as number | null,
+    outputTokens: null as number | null,
+    totalTokens: null as number | null,
     inputPreview: userInput.trim().split(/\s+/).slice(0, 200).join(' '),
     outputPreview: '',
     startTimestamp: startTimestamp.toISOString(),
@@ -24,7 +25,13 @@ export async function POST(req: Request) {
   }
 
   function onResponseComplete(finishedObject: typeof logObj) {
-    console.log(finishedObject)
+    fetch(`${env.LOG_SERVICE_URL}/ingest`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(finishedObject)
+    })
   }
 
   const result = streamText({
@@ -44,9 +51,9 @@ export async function POST(req: Request) {
       logObj.endTimestamp = new Date().toISOString()
       logObj.provider = finishedObject.model.provider
       logObj.model = finishedObject.model.modelId
-      logObj.inputTokens = finishedObject.totalUsage.inputTokens
-      logObj.outputTokens = finishedObject.totalUsage.outputTokens
-      logObj.totalTokens = finishedObject.totalUsage.totalTokens
+      logObj.inputTokens = finishedObject.totalUsage.inputTokens ?? null
+      logObj.outputTokens = finishedObject.totalUsage.outputTokens ?? null
+      logObj.totalTokens = finishedObject.totalUsage.totalTokens ?? null
       logObj.outputPreview = finishedObject.text.trim().split(/\s+/).slice(0, 200).join(' ')
       onResponseComplete(logObj)
     },

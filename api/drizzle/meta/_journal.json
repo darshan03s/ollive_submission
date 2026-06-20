@@ -15,6 +15,13 @@
       "when": 1781880920860,
       "tag": "0001_add_inference_events",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1781969475830,
+      "tag": "0002_damp_firestar",
+      "breakpoints": true
     }
   ]
 }
