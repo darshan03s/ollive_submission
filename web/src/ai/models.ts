@@ -1,8 +1,8 @@
-import { GatewayModelId } from 'ai'
+import { LanguageModel } from 'ai'
 
 export type Model = {
   provider: 'openai' | 'anthropic' | 'google' | 'xai' | 'meta'
-  model: GatewayModelId
+  model: LanguageModel
   modelId: string
 }
 
