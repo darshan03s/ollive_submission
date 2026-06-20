@@ -48,7 +48,7 @@ const Page = () => {
   return (
     <Main className="max-w-3xl mx-auto flex flex-col py-4">
       <ConversationComp messages={messages} />
-      <div className="h-1/4 max-w-xl mx-auto w-full">
+      <div className="h-1/4">
         <PromptInputComp
           handleSubmit={handleSubmit}
           handleModelSelect={handleModelSelect}
