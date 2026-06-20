@@ -47,11 +47,7 @@ const Page = () => {
 
   return (
     <Main className="flex flex-col h-[calc(100vh-var(--header-height))]">
-      <div className="flex-1 overflow-y-auto">
-        <div className="max-w-3xl mx-auto py-4">
-          <ConversationComp messages={messages} />
-        </div>
-      </div>
+      <ConversationComp messages={messages} className="flex-1" />
       <div className="max-w-3xl w-full mx-auto px-4 pb-4 bg-background">
         <PromptInputComp
           handleSubmit={handleSubmit}
