@@ -5,35 +5,31 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"pnpm dev:server\" \"pnpm dev:worker\"",
+    "dev": "pnpm --filter db build && concurrently \"pnpm dev:server\" \"pnpm dev:worker\"",
     "dev:server": "nodemon --watch src --ext ts --exec tsx src/index.ts",
     "dev:worker": "tsx src/worker.ts",
     "build": "tsc && tsc-alias",
-    "start": "node dist/index.js",
-    "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate",
-    "db:studio": "drizzle-kit studio"
+    "start": "pnpm --filter db build && concurrently \"pnpm start:server\" \"pnpm start:worker\"",
+    "start:server": "node dist/index.js",
+    "start:worker": "node dist/worker.js"
   },
   "dependencies": {
+    "db": "workspace:*",
     "@t3-oss/env-core": "^0.13.11",
     "bullmq": "^5.79.0",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
-    "drizzle-orm": "^0.45.2",
     "express": "^5.2.1",
     "ioredis": "^5.11.1",
     "morgan": "^1.10.1",
-    "pg": "^8.22.0",
-    "zod": "^4.4.3"
+    "zod": "^4.4.3",
+    "concurrently": "^10.0.3"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/morgan": "^1.9.10",
     "@types/node": "^25.8.0",
-    "@types/pg": "^8.20.0",
-    "concurrently": "^10.0.3",
-    "drizzle-kit": "^0.31.10",
     "nodemon": "^3.1.14",
     "tsc-alias": "^1.8.17",
     "tsx": "^4.21.0",

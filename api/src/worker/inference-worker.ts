@@ -1,6 +1,6 @@
 import { Worker } from 'bullmq'
-import { db } from '@/db/index.js'
-import { inferenceEvents } from '@/db/schema.js'
+import { db } from 'db'
+import { inferenceEvents } from 'db/schema'
 import { env } from '@/env.js'
 
 export const inferenceWorker = new Worker(
@@ -20,6 +20,6 @@ inferenceWorker.on('completed', () => {
   console.log(`Job completed`)
 })
 
-inferenceWorker.on('failed', (err) => {
+inferenceWorker.on('failed', (_job, err) => {
   console.error(`Job failed with error: ${err}`)
 })
