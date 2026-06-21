@@ -5,11 +5,14 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "pnpm --filter db build && concurrently \"pnpm dev:server\" \"pnpm dev:worker\"",
+    "db:build": "pnpm --filter db build",
+    "predev": "pnpm db:build",
+    "prebuild": "pnpm db:build",
+    "dev": "concurrently \"pnpm dev:server\" \"pnpm dev:worker\"",
     "dev:server": "nodemon --watch src --ext ts --exec tsx src/index.ts",
     "dev:worker": "tsx src/worker.ts",
     "build": "tsc && tsc-alias",
-    "start": "pnpm --filter db build && concurrently \"pnpm start:server\" \"pnpm start:worker\"",
+    "start": "concurrently \"pnpm start:server\" \"pnpm start:worker\"",
     "start:server": "node dist/index.js",
     "start:worker": "node dist/worker.js"
   },
