@@ -13,12 +13,14 @@ import { MessageSquare } from 'lucide-react'
 
 const ConversationComp = ({
   messages,
+  isLoading,
   className
 }: {
   messages: UIMessage[]
+  isLoading: boolean
   className?: string
 }) => {
-  if (messages.length === 0) {
+  if (messages.length === 0 && !isLoading) {
     return (
       <div className={cn('flex items-center justify-center', className)}>
         <ConversationEmptyState
