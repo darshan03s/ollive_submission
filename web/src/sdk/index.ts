@@ -25,6 +25,13 @@ export async function sdk(model: LanguageModel, messages: UIMessage[], userInput
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(finishedObject)
+    }).catch((error) => {
+      if (error?.cause?.code === 'ECONNREFUSED') {
+        console.warn('[sdk] Log service unavailable; skipping inference log')
+        return
+      }
+
+      console.error('[sdk] Failed to send inference log:', error)
     })
   }
 
