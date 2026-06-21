@@ -9,6 +9,8 @@ import { useChat } from '@ai-sdk/react'
 import { DefaultChatTransport } from 'ai'
 import ConversationComp from '@/components/conversation-comp'
 import { nanoid } from 'nanoid'
+import { LocalStorage } from '@/lib/local-storage'
+import { useRouter } from 'next/navigation'
 
 const chatTransport = new DefaultChatTransport({ api: '/api/chat' })
 const PENDING_USER_INPUT_KEY = 'pendingUserInput'
@@ -20,6 +22,7 @@ const ChatPage = ({ conversationId }: { conversationId?: string }) => {
     transport: chatTransport,
     id: conversationId
   })
+  const router = useRouter()
 
   const selectedModelData = models.find((m) => m.model === model)!
 
@@ -41,9 +44,13 @@ const ChatPage = ({ conversationId }: { conversationId?: string }) => {
 
       if (!conversationId) {
         sessionStorage.setItem(PENDING_USER_INPUT_KEY, message.text)
-        window.location.href = `/conversation/${id}`
+        router.push(`/conversation/${id}`)
         return
       }
+
+      const userId = LocalStorage.getUserId()
+
+      const title = message.text.trim().split(/\s+/).slice(0, 10).join(' ')
 
       sendMessage(
         { text: message.text },
@@ -51,7 +58,9 @@ const ChatPage = ({ conversationId }: { conversationId?: string }) => {
           body: {
             model: selectedModelData.model,
             userInput: message.text,
-            conversationId: id
+            conversationId: id,
+            userId,
+            title
           }
         }
       )

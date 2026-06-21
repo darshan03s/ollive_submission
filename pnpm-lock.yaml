@@ -145,6 +145,9 @@ importers:
       cmdk:
         specifier: ^1.1.1
         version: 1.1.1(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      db:
+        specifier: workspace:*
+        version: link:../db
       lucide-react:
         specifier: ^1.14.0
         version: 1.21.0(react@19.2.4)

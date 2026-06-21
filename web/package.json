@@ -13,6 +13,7 @@
     "format": "prettier --write ."
   },
   "dependencies": {
+    "db": "workspace:*",
     "@ai-sdk/react": "^3.0.210",
     "@streamdown/cjk": "^1.0.3",
     "@streamdown/code": "^1.1.1",
