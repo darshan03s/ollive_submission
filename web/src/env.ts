@@ -5,7 +5,7 @@ export const env = createEnv({
   server: {
     APP_URL: z.string().min(1).default('http://localhost:3000'),
     AI_GATEWAY_API_KEY: z.string().min(1),
-    LOG_SERVICE_URL: z.string().min(1).default('http://localhost:3001'),
+    INGEST_SERVICE_URL: z.string().min(1).default('http://localhost:3001'),
     DATABASE_URL: z.url()
   },
   client: {

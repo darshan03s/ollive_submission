@@ -25,7 +25,7 @@ export async function sdk(
   }
 
   function onResponseComplete(finishedObject: typeof logObj) {
-    fetch(`${env.LOG_SERVICE_URL}/ingest`, {
+    fetch(`${env.INGEST_SERVICE_URL}/ingest`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -33,11 +33,11 @@ export async function sdk(
       body: JSON.stringify(finishedObject)
     }).catch((error) => {
       if (error?.cause?.code === 'ECONNREFUSED') {
-        console.warn('[sdk] Log service unavailable; skipping inference log')
+        console.warn('[sdk] Ingest service unavailable; skipping inference log')
         return
       }
 
-      console.error('[sdk] Failed to send inference log:', error)
+      console.error('[sdk] Failed to send inference data:', error)
     })
   }
 

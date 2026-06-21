@@ -1,6 +1,6 @@
 packages:
   - web
-  - api
+  - ingest
   - db
 
 onlyBuiltDependencies:
