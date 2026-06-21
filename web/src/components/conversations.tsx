@@ -7,6 +7,7 @@ import { SidebarMenu, SidebarMenuAction, SidebarMenuButton, SidebarMenuItem } fr
 import Link from 'next/link'
 import { Ellipsis } from 'lucide-react'
 import { useUserId } from '@/hooks/use-user-id'
+import { Spinner } from './kibo-ui/spinner'
 
 const getConversations = async (userId: string): Promise<ConversationType[]> => {
   const res = await fetch(`${env.NEXT_PUBLIC_APP_URL}/api/conversations`, {
@@ -30,8 +31,8 @@ const Conversations = () => {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-full text-muted-foreground">
-        Loading...
+      <div className="flex items-center justify-center h-full">
+        <Spinner variant="bars" />
       </div>
     )
   }

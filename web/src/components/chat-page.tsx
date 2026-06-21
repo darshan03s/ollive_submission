@@ -13,6 +13,7 @@ import { LocalStorage } from '@/lib/local-storage'
 import { useRouter } from 'next/navigation'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { env } from '@/env'
+import { Spinner } from './kibo-ui/spinner'
 
 const chatTransport = new DefaultChatTransport({ api: '/api/chat' })
 const PENDING_USER_INPUT_KEY = 'pendingUserInput'
@@ -42,7 +43,7 @@ const ChatPage = ({ conversationId }: { conversationId?: string }) => {
     }
   })
   const router = useRouter()
-  const { data: messagesData } = useQuery({
+  const { data: messagesData, isLoading: isMessagesLoading } = useQuery({
     queryKey: ['messages', conversationId],
     queryFn: () => getMessages(conversationId!),
     enabled: !!conversationId
@@ -112,6 +113,14 @@ const ChatPage = ({ conversationId }: { conversationId?: string }) => {
     sessionStorage.removeItem(PENDING_USER_INPUT_KEY)
     handleSubmit({ text: pendingUserInput, files: [] })
   }, [conversationId, handleSubmit])
+
+  if (isMessagesLoading) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <Spinner variant="bars" />
+      </div>
+    )
+  }
 
   return (
     <Main className="flex flex-col h-[calc(100vh-var(--header-height))]">
