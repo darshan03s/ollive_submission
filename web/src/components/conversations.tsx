@@ -54,12 +54,12 @@ const Conversations = () => {
   }
 
   return (
-    <div>
+    <div className="space-y-2">
       {data?.map((conversation) => (
         <SidebarMenu key={conversation.id}>
           <SidebarMenuItem>
             <Link href={`/conversation/${conversation.id}`}>
-              <SidebarMenuButton>{conversation.title}</SidebarMenuButton>
+              <SidebarMenuButton className="line-clamp-1">{conversation.title}</SidebarMenuButton>
             </Link>
             <SidebarMenuAction>
               <Ellipsis />
