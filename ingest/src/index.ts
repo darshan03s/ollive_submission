@@ -11,7 +11,7 @@ const app = express()
 
 const PORT = env.PORT
 
-const allowedOrigins = [env.CORS_ORIGIN].filter(Boolean)
+const allowedOrigins = [env.INGEST_SERVICE_CORS_ORIGIN].filter(Boolean)
 
 app.use(express.json())
 app.use(

@@ -50,8 +50,8 @@ services:
     environment:
       NODE_ENV: production
       PORT: 3001
-      BASE_URL: ${BASE_URL}
-      CORS_ORIGIN: ${CORS_ORIGIN}
+      INGEST_SERVICE_URL: ${INGEST_SERVICE_URL}
+      INGEST_SERVICE_CORS_ORIGIN: ${INGEST_SERVICE_CORS_ORIGIN}
       DATABASE_URL: postgres://postgres:postgres@postgres:5432/ollive
       REDIS_HOST: redis
       REDIS_PORT: 6379

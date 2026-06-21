@@ -7,9 +7,9 @@ export const env = createEnv({
 
     PORT: z.coerce.number().default(3001),
 
-    BASE_URL: z.url(),
+    INGEST_SERVICE_URL: z.url().default('http://localhost:3001'),
 
-    CORS_ORIGIN: z.url(),
+    INGEST_SERVICE_CORS_ORIGIN: z.url().default('http://localhost:3000'),
 
     DATABASE_URL: z.url(),
 
