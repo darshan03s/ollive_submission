@@ -1,9 +1,9 @@
 import { env } from './env'
 import { Metadata } from 'next'
 
-export const APP_NAME = 'Chatty'
+export const APP_NAME = 'Chatio'
 
-const APP_DESCRIPTION = 'Chatty is a platform for AI-powered chatbots.'
+const APP_DESCRIPTION = 'Chatio - AI-powered chatbot'
 
 const APP_KEYWORDS: string[] = []
 
