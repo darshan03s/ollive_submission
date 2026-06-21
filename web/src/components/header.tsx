@@ -24,7 +24,7 @@ const Header = () => {
         ) : null}
       </div>
       <div className="header-right flex items-center gap-4">
-        <span>{userId}</span>
+        <span className="text-sm text-muted-foreground">{userId}</span>
         <ModeToggle />
       </div>
     </header>
