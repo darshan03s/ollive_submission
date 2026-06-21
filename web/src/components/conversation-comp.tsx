@@ -1,7 +1,6 @@
 'use client'
 
 import { UIMessage } from 'ai'
-import { cn } from '@/lib/utils'
 import {
   Conversation,
   ConversationContent,
@@ -13,16 +12,18 @@ import { MessageSquare } from 'lucide-react'
 
 const ConversationComp = ({
   messages,
-  isLoading,
-  className
+  isLoading
 }: {
   messages: UIMessage[]
   isLoading: boolean
-  className?: string
 }) => {
-  if (messages.length === 0 && !isLoading) {
+  if (isLoading) {
+    return <div className="flex items-center justify-center flex-1" />
+  }
+
+  if (messages.length === 0) {
     return (
-      <div className={cn('flex items-center justify-center', className)}>
+      <div className="flex items-center justify-center flex-1">
         <ConversationEmptyState
           icon={<MessageSquare className="size-12" />}
           title="Start a conversation"
@@ -33,7 +34,7 @@ const ConversationComp = ({
   }
 
   return (
-    <Conversation className={className}>
+    <Conversation className="flex-1">
       <ConversationContent className="max-w-3xl mx-auto w-full px-4 pb-12">
         {messages.map((message) => (
           <Message from={message.role} key={message.id}>

@@ -42,7 +42,7 @@ const ChatPage = ({ conversationId }: { conversationId?: string }) => {
     }
   })
   const router = useRouter()
-  const { data: messagesHistory, isPending: isMessagesLoading } = useQuery({
+  const { data: messagesHistory, isLoading: isMessagesLoading } = useQuery({
     queryKey: ['messages', conversationId],
     queryFn: () => getMessages(conversationId!),
     enabled: !!conversationId
@@ -117,7 +117,7 @@ const ChatPage = ({ conversationId }: { conversationId?: string }) => {
 
   return (
     <Main className="flex flex-col h-[calc(100vh-var(--header-height))]">
-      <ConversationComp messages={messages} isLoading={isMessagesLoading} className="flex-1" />
+      <ConversationComp messages={messages} isLoading={isMessagesLoading} />
       <div className="max-w-3xl w-full mx-auto px-4 pb-4 bg-background">
         <PromptInputComp
           handleSubmit={handleSubmit}
