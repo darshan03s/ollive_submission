@@ -11,16 +11,30 @@ import ConversationComp from '@/components/conversation-comp'
 import { nanoid } from 'nanoid'
 import { LocalStorage } from '@/lib/local-storage'
 import { useRouter } from 'next/navigation'
-import { useQueryClient } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { env } from '@/env'
 
 const chatTransport = new DefaultChatTransport({ api: '/api/chat' })
 const PENDING_USER_INPUT_KEY = 'pendingUserInput'
+
+const getMessages = async (conversationId: string) => {
+  const res = await fetch(
+    `${env.NEXT_PUBLIC_APP_URL}/api/messages?conversationId=${conversationId}`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+  )
+  return res.json()
+}
 
 const ChatPage = ({ conversationId }: { conversationId?: string }) => {
   const [model, setModel] = useState<Model['model']>(models[0].model)
   const [modelSelectorOpen, setModelSelectorOpen] = useState(false)
   const queryClient = useQueryClient()
-  const { messages, sendMessage, status } = useChat({
+  const { messages, sendMessage, status, setMessages } = useChat({
     transport: chatTransport,
     id: conversationId,
     onFinish: () => {
@@ -28,6 +42,17 @@ const ChatPage = ({ conversationId }: { conversationId?: string }) => {
     }
   })
   const router = useRouter()
+  const { data: messagesData } = useQuery({
+    queryKey: ['messages', conversationId],
+    queryFn: () => getMessages(conversationId!),
+    enabled: !!conversationId
+  })
+
+  useEffect(() => {
+    if (messagesData) {
+      setMessages(messagesData)
+    }
+  }, [messagesData, setMessages])
 
   const selectedModelData = models.find((m) => m.model === model)!
 

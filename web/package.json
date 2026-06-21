@@ -3,10 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "dev:min": "cross-env NODE_OPTIONS=--max-old-space-size=2048 next dev",
+    "dev": "pnpm --filter db build && next dev",
+    "dev:min": "pnpm --filter db build && cross-env NODE_OPTIONS=--max-old-space-size=2048 next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "pnpm --filter db build && next start",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "typecheck": "tsc --noEmit",
