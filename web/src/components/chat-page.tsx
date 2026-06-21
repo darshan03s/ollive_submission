@@ -11,6 +11,7 @@ import ConversationComp from '@/components/conversation-comp'
 import { nanoid } from 'nanoid'
 import { LocalStorage } from '@/lib/local-storage'
 import { useRouter } from 'next/navigation'
+import { useQueryClient } from '@tanstack/react-query'
 
 const chatTransport = new DefaultChatTransport({ api: '/api/chat' })
 const PENDING_USER_INPUT_KEY = 'pendingUserInput'
@@ -18,9 +19,13 @@ const PENDING_USER_INPUT_KEY = 'pendingUserInput'
 const ChatPage = ({ conversationId }: { conversationId?: string }) => {
   const [model, setModel] = useState<Model['model']>(models[0].model)
   const [modelSelectorOpen, setModelSelectorOpen] = useState(false)
+  const queryClient = useQueryClient()
   const { messages, sendMessage, status } = useChat({
     transport: chatTransport,
-    id: conversationId
+    id: conversationId,
+    onFinish: () => {
+      queryClient.invalidateQueries({ queryKey: ['conversations'] })
+    }
   })
   const router = useRouter()
 

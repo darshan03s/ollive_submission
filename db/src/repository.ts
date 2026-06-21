@@ -15,7 +15,7 @@ export const inferenceEventsRepository = {
 
 export const conversationsRepository = {
   create: async (conversation: ConversationInsertType) => {
-    return await db.insert(conversations).values(conversation).returning()
+    return await db.insert(conversations).values(conversation).onConflictDoNothing().returning()
   },
   getAllByUserId: async (userId: string) => {
     return await db

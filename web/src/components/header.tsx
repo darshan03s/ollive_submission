@@ -2,28 +2,26 @@
 
 import { ModeToggle } from './mode-toggle'
 import Brand from './brand'
-import { LocalStorage } from '@/lib/local-storage'
-import { useEffect, useState } from 'react'
+import { SidebarTrigger, useSidebar } from './ui/sidebar'
+import { useIsMobile } from '@/hooks/use-mobile'
+import { useUserId } from '@/hooks/use-user-id'
 
 const Header = () => {
-  const [userId, setUserId] = useState<string | null>(LocalStorage.getUserId())
+  const userId = useUserId()
+  const { open } = useSidebar()
+  const isMobile = useIsMobile()
 
-  useEffect(() => {
-    const handleCreateUserId = (event: Event) => {
-      setUserId((event as CustomEvent<{ userId: string }>).detail.userId)
-    }
-
-    window.addEventListener('create-user-id', handleCreateUserId as EventListener)
-
-    return () => {
-      window.removeEventListener('create-user-id', handleCreateUserId as EventListener)
-    }
-  }, [])
+  const showHeaderLeft = isMobile ? true : !open
 
   return (
     <header className="h-(--header-height) flex items-center justify-between px-4 backdrop-blur-md bg-background/60 sticky top-0 left-0 z-10">
       <div className="header-left">
-        <Brand />
+        {showHeaderLeft ? (
+          <div className="flex items-center gap-2">
+            <SidebarTrigger />
+            <Brand />
+          </div>
+        ) : null}
       </div>
       <div className="header-right flex items-center gap-4">
         <span>{userId}</span>

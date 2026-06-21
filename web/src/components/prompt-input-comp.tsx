@@ -37,7 +37,7 @@ interface ModelItemProps {
 const ModelItem = memo(({ m, selectedModel, onSelect }: ModelItemProps) => {
   const handleSelect = useCallback(() => onSelect(m.model), [onSelect, m.model])
   return (
-    <ModelSelectorItem onSelect={handleSelect} value={m.model}>
+    <ModelSelectorItem onSelect={handleSelect} value={m.model as string}>
       <ModelSelectorLogo provider={m.provider} />
       <ModelSelectorName className="capitalize">{m.modelId}</ModelSelectorName>
       {selectedModel === m.model ? (
@@ -105,7 +105,7 @@ const PromptInputComp = ({
                           .filter((m) => m.provider === provider)
                           .map((m) => (
                             <ModelItem
-                              key={m.model}
+                              key={m.model as string}
                               m={m}
                               onSelect={handleModelSelect}
                               selectedModel={model}
