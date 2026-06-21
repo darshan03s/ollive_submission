@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 export const InferenceCompletedEventSchema = z.object({
+  conversationId: z.string(),
   provider: z.string(),
   model: z.string(),
   inputTokens: z.number().nullable(),

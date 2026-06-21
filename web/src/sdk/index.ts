@@ -1,10 +1,16 @@
 import { env } from '@/env'
 import { convertToModelMessages, LanguageModel, streamText, UIMessage } from 'ai'
 
-export async function sdk(model: LanguageModel, messages: UIMessage[], userInput: string) {
+export async function sdk(
+  model: LanguageModel,
+  messages: UIMessage[],
+  userInput: string,
+  conversationId: string
+) {
   const startTimestamp = new Date()
 
   const logObj = {
+    conversationId,
     provider: '',
     model: '',
     inputTokens: null as number | null,

@@ -4,6 +4,7 @@ export const inferenceStatusEnum = pgEnum('inference_status', ['success', 'error
 
 export const inferenceEvents = pgTable('inference_events', {
   id: uuid().primaryKey().defaultRandom(),
+  conversationId: text('conversation_id').notNull(),
   provider: text('provider').notNull(),
   model: text('model').notNull(),
   latencyMs: integer('latency_ms').notNull(),

@@ -1,0 +1,1 @@
+ALTER TABLE "inference_events" ADD COLUMN "conversation_id" text NOT NULL;
