@@ -6,5 +6,6 @@ export const env = createEnv({
     DATABASE_URL: z.url()
   },
   runtimeEnv: process.env,
-  emptyStringAsUndefined: true
+  emptyStringAsUndefined: true,
+  skipValidation: !!process.env.SKIP_ENV_VALIDATION
 })

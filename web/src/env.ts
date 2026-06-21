@@ -11,5 +11,6 @@ export const env = createEnv({
   client: {
     NEXT_PUBLIC_APP_URL: z.string().min(1).default('http://localhost:3000')
   },
-  runtimeEnv: process.env as Record<string, string>
+  runtimeEnv: process.env as Record<string, string>,
+  skipValidation: !!process.env.SKIP_ENV_VALIDATION
 })
