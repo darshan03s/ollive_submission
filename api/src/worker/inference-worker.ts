@@ -1,12 +1,11 @@
 import { Worker } from 'bullmq'
-import { db } from 'db'
-import { inferenceEvents } from 'db/schema'
+import { inferenceEventsRepository } from 'db/repository'
 import { env } from '@/env.js'
 
 export const inferenceWorker = new Worker(
   'inference-events',
   async (job) => {
-    await db.insert(inferenceEvents).values(job.data)
+    await inferenceEventsRepository.create(job.data)
   },
   {
     connection: {

@@ -31,7 +31,7 @@ export const messages = pgTable('messages', {
   id: text('id').primaryKey(),
   conversationId: text('conversation_id')
     .notNull()
-    .references(() => conversations.id),
+    .references(() => conversations.id, { onDelete: 'cascade' }),
   role: messageRoleEnum('role').notNull(),
   parts: jsonb('parts').notNull(),
   metadata: jsonb('metadata'),
