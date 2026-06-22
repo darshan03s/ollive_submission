@@ -76,7 +76,7 @@ const ChatPage = ({ conversationId }: { conversationId?: string }) => {
 
   const [modelSelectorOpen, setModelSelectorOpen] = useState(false)
   const queryClient = useQueryClient()
-  const { messages, sendMessage, status, setMessages } = useChat({
+  const { messages, sendMessage, status, setMessages, stop } = useChat({
     transport: chatTransport,
     id: conversationId,
     onError: (error) => {
@@ -194,6 +194,7 @@ const ChatPage = ({ conversationId }: { conversationId?: string }) => {
       />
       <div className="max-w-3xl w-full mx-auto px-4 pb-4 bg-background">
         <PromptInputComp
+          stop={stop}
           handleSubmit={handleSubmit}
           handleModelSelect={handleModelSelect}
           model={model}

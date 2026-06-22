@@ -52,6 +52,7 @@ const ModelItem = memo(({ m, selectedModel, onSelect }: ModelItemProps) => {
 ModelItem.displayName = 'ModelItem'
 
 interface PromptInputCompProps {
+  stop: () => void
   handleSubmit: (message: PromptInputMessage) => void
   handleModelSelect: (model: Model['model']) => void
   model: Model['model']
@@ -62,6 +63,7 @@ interface PromptInputCompProps {
 }
 
 const PromptInputComp = ({
+  stop,
   handleSubmit,
   handleModelSelect,
   model,
@@ -73,7 +75,7 @@ const PromptInputComp = ({
   return (
     <div className="size-full">
       <PromptInputProvider>
-        <PromptInput globalDrop multiple onSubmit={handleSubmit}>
+        <PromptInput onSubmit={handleSubmit}>
           <PromptInputBody>
             <PromptInputTextarea />
           </PromptInputBody>
@@ -117,7 +119,10 @@ const PromptInputComp = ({
                 </ModelSelectorContent>
               </ModelSelector>
             </PromptInputTools>
-            <PromptInputSubmit status={status} />
+            <PromptInputSubmit
+              status={status}
+              onClick={status === 'streaming' ? stop : undefined}
+            />
           </PromptInputFooter>
         </PromptInput>
       </PromptInputProvider>
