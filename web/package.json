@@ -5,6 +5,7 @@
   "scripts": {
     "db:build": "pnpm --filter db build",
     "predev:min": "pnpm db:build",
+    "predev": "pnpm db:build",
     "prebuild": "pnpm db:build",
     "dev": "next dev",
     "dev:min": "cross-env NODE_OPTIONS=--max-old-space-size=2048 next dev",
