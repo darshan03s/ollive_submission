@@ -183,7 +183,11 @@ const ChatPage = ({ conversationId }: { conversationId?: string }) => {
 
   return (
     <Main className="flex flex-col h-[calc(100vh-var(--header-height))]">
-      <ConversationComp messages={messages} isLoading={isMessagesLoading} />
+      <ConversationComp
+        messages={messages}
+        isLoading={isMessagesLoading}
+        showEmptyState={!conversationId}
+      />
       <div className="max-w-3xl w-full mx-auto px-4 pb-4 bg-background">
         <PromptInputComp
           handleSubmit={handleSubmit}
