@@ -5,11 +5,27 @@ import type {
   MessageInsertType
 } from './types.js'
 import { conversations, inferenceEvents, messages } from './schema.js'
-import { and, asc, desc, eq } from 'drizzle-orm'
+import { and, asc, desc, eq, gte, lte } from 'drizzle-orm'
 
 export const inferenceEventsRepository = {
   create: async (inferenceEvent: InferenceEventInsertType) => {
     return await db.insert(inferenceEvents).values(inferenceEvent).returning()
+  },
+  getInRange: async (from: string, to: string) => {
+    return await db
+      .select()
+      .from(inferenceEvents)
+      .where(
+        and(gte(inferenceEvents.startTimestamp, from), lte(inferenceEvents.startTimestamp, to))
+      )
+      .orderBy(asc(inferenceEvents.startTimestamp))
+  },
+  getRecent: async (limit: number) => {
+    return await db
+      .select()
+      .from(inferenceEvents)
+      .orderBy(desc(inferenceEvents.startTimestamp))
+      .limit(limit)
   }
 }
 
