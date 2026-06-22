@@ -12,21 +12,17 @@ import { nanoid } from 'nanoid'
 import { LocalStorage } from '@/lib/local-storage'
 import { useRouter } from 'next/navigation'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { env } from '@/env'
 
 const chatTransport = new DefaultChatTransport({ api: '/api/chat' })
 const PENDING_USER_INPUT_KEY = 'pendingUserInput'
 
 const getMessages = async (conversationId: string): Promise<UIMessage[]> => {
-  const res = await fetch(
-    `${env.NEXT_PUBLIC_APP_URL}/api/messages?conversationId=${conversationId}`,
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
+  const res = await fetch(`/api/messages?conversationId=${conversationId}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
     }
-  )
+  })
   return res.json()
 }
 

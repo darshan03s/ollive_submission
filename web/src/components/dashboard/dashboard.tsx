@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { env } from '@/env'
 import { RANGES, type MetricRange, type MetricsResponse } from '@/lib/metrics'
 import type { InferenceEventType } from 'db/types'
 import { Button } from '@/components/ui/button'
@@ -17,7 +16,7 @@ import LogsTable from './logs-table'
 const REFETCH_INTERVAL = 10_000
 
 const getMetrics = async (range: MetricRange): Promise<MetricsResponse> => {
-  const res = await fetch(`${env.NEXT_PUBLIC_APP_URL}/api/metrics?range=${range}`)
+  const res = await fetch(`/api/metrics?range=${range}`)
   if (!res.ok) {
     throw new Error('Failed to load metrics')
   }
@@ -25,7 +24,7 @@ const getMetrics = async (range: MetricRange): Promise<MetricsResponse> => {
 }
 
 const getRecentEvents = async (): Promise<InferenceEventType[]> => {
-  const res = await fetch(`${env.NEXT_PUBLIC_APP_URL}/api/inference-events?limit=50`)
+  const res = await fetch('/api/inference-events?limit=50')
   if (!res.ok) {
     throw new Error('Failed to load inference logs')
   }

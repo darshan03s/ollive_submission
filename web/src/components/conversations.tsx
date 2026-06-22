@@ -1,6 +1,5 @@
 'use client'
 
-import { env } from '@/env'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { ConversationType } from 'db/types'
 import { SidebarMenu, SidebarMenuAction, SidebarMenuButton, SidebarMenuItem } from './ui/sidebar'
@@ -18,7 +17,7 @@ import {
 import { useRouter } from 'next/navigation'
 
 const getConversations = async (userId: string): Promise<ConversationType[]> => {
-  const res = await fetch(`${env.NEXT_PUBLIC_APP_URL}/api/conversations`, {
+  const res = await fetch('/api/conversations', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -29,7 +28,7 @@ const getConversations = async (userId: string): Promise<ConversationType[]> => 
 }
 
 const deleteConversation = async (userId: string, conversationId: string) => {
-  const res = await fetch(`${env.NEXT_PUBLIC_APP_URL}/api/conversations/${conversationId}`, {
+  const res = await fetch(`/api/conversations/${conversationId}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
