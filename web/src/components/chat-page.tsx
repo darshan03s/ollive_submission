@@ -32,7 +32,19 @@ const getMessages = async (conversationId: string): Promise<UIMessage[]> => {
 }
 
 const ChatPage = ({ conversationId }: { conversationId?: string }) => {
-  const [model, setModel] = useState<Model['model']>(models[0].model)
+  const [model, setModel] = useState<Model['model']>(() => {
+    if (typeof window === 'undefined') {
+      return models[0].model
+    }
+
+    const pending = JSON.parse(sessionStorage.getItem(PENDING_CHAT_KEY)!) as PendingChat
+
+    if (!pending?.model) {
+      return models[0].model
+    }
+    return pending.model
+  })
+
   const [modelSelectorOpen, setModelSelectorOpen] = useState(false)
   const queryClient = useQueryClient()
   const { messages, sendMessage, status, setMessages } = useChat({
@@ -113,12 +125,6 @@ const ChatPage = ({ conversationId }: { conversationId?: string }) => {
 
     if (!pendingChat) {
       return
-    }
-
-    const selectedModel = pendingChat.model
-
-    if (selectedModel) {
-      setModel(selectedModel as Model['model'])
     }
 
     handleSubmit({ text: pendingChat.text, files: [] })
