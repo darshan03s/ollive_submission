@@ -9,6 +9,7 @@
     "prettier": "3.8.4"
   },
   "scripts": {
-    "prepare": "husky"
+    "prepare": "husky",
+    "install:all": "pnpm install && pnpm --filter db install && pnpm --filter ingest install && pnpm --filter web install"
   }
 }
