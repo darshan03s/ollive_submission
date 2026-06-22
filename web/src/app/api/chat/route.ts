@@ -44,7 +44,7 @@ export async function POST(req: Request) {
     title: title
   })
 
-  const result = await sdk(model, messages, userInput, conversationId)
+  const result = await sdk(model, messages, userInput, conversationId, req.signal)
 
   return result.toUIMessageStreamResponse({
     onFinish: (finishedObject) => {

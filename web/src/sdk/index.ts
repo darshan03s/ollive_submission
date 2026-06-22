@@ -5,7 +5,8 @@ export async function sdk(
   model: LanguageModel,
   messages: UIMessage[],
   userInput: string,
-  conversationId: string
+  conversationId: string,
+  abortSignal: AbortSignal
 ) {
   const startTimestamp = new Date()
 
@@ -42,6 +43,7 @@ export async function sdk(
   }
 
   const result = streamText({
+    abortSignal,
     model,
     messages: await convertToModelMessages(messages),
     onChunk: () => {
@@ -53,6 +55,7 @@ export async function sdk(
       console.error(error)
       logObj.status = 'error'
       logObj.endTimestamp = new Date().toISOString()
+      onResponseComplete(logObj)
     },
     onFinish: (finishedObject) => {
       logObj.endTimestamp = new Date().toISOString()
@@ -67,6 +70,7 @@ export async function sdk(
     onAbort: () => {
       logObj.status = 'aborted'
       logObj.endTimestamp = new Date().toISOString()
+      onResponseComplete(logObj)
     }
   })
 
