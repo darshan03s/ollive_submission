@@ -50,10 +50,8 @@ services:
     environment:
       NODE_ENV: production
       PORT: 3001
-      INGEST_SERVICE_CORS_ORIGIN: ${INGEST_SERVICE_CORS_ORIGIN}
+      INGEST_SERVICE_CORS_ORIGIN: http://localhost:3000
       DATABASE_URL: postgres://postgres:postgres@postgres:5432/ollive
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
       REDIS_URL: redis://redis:6379
     depends_on:
       redis:
@@ -67,13 +65,14 @@ services:
       dockerfile: Dockerfile
       target: web
       args:
-        NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
+        NEXT_PUBLIC_APP_URL: http://localhost:3000
     command: pnpm --filter web start
     ports:
       - "3000:3000"
     environment:
       NODE_ENV: production
       APP_URL: http://localhost:3000
+      NEXT_PUBLIC_APP_URL: http://localhost:3000
       AI_GATEWAY_API_KEY: ${AI_GATEWAY_API_KEY}
       INGEST_SERVICE_URL: http://ingest:3001
       DATABASE_URL: postgres://postgres:postgres@postgres:5432/ollive
