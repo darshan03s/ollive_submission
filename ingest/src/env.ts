@@ -3,13 +3,13 @@ import { z } from 'zod'
 
 export const env = createEnv({
   server: {
-    NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
+    NODE_ENV: z.enum(['development', 'production', 'test']),
 
     PORT: z.coerce.number().default(3001),
 
-    INGEST_SERVICE_URL: z.url().default('http://localhost:3001'),
+    INGEST_SERVICE_URL: z.url(),
 
-    INGEST_SERVICE_CORS_ORIGIN: z.url().default('http://localhost:3000'),
+    INGEST_SERVICE_CORS_ORIGIN: z.url(),
 
     DATABASE_URL: z.url(),
 
