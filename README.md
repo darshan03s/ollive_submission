@@ -4,6 +4,8 @@ AI chatbot with a lightweight inference-logging SDK and ingestion pipeline. Chat
 
 **Live demo**: https://chatio-nu.vercel.app
 
+**Architecture notes**: [ARCHITECTURE.md](./ARCHITECTURE.md) — ingestion flow, logging strategy, failure handling, scaling.
+
 ## Architecture overview
 
 ```
