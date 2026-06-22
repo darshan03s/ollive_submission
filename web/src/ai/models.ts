@@ -13,6 +13,11 @@ export const models: Model[] = [
     modelId: 'gpt-4o'
   },
   {
+    provider: 'openai',
+    model: 'openai/gpt-4.1',
+    modelId: 'gpt-4.1'
+  },
+  {
     provider: 'anthropic',
     model: 'anthropic/claude-3-haiku',
     modelId: 'claude-3-haiku'
@@ -34,4 +39,4 @@ export const models: Model[] = [
   }
 ]
 
-export const modelProviders = models.map((m) => m.provider)
+export const modelProviders = [...new Set(models.map((m) => m.provider))]
