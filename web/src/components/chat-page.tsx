@@ -13,6 +13,7 @@ import { LocalStorage } from '@/lib/local-storage'
 import { useRouter } from 'next/navigation'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { ConversationType } from 'db/types'
+import { toast } from 'sonner'
 
 const chatTransport = new DefaultChatTransport({ api: '/api/chat' })
 const PENDING_CHAT_KEY = 'pendingChat'
@@ -77,7 +78,10 @@ const ChatPage = ({ conversationId }: { conversationId?: string }) => {
   const queryClient = useQueryClient()
   const { messages, sendMessage, status, setMessages } = useChat({
     transport: chatTransport,
-    id: conversationId
+    id: conversationId,
+    onError: (error) => {
+      toast.error(error.message)
+    }
   })
   const router = useRouter()
   const { data: messagesHistory, isLoading: isMessagesLoading } = useQuery({

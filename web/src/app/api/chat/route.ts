@@ -1,5 +1,6 @@
 import { sdk } from '@/sdk'
-import { UIMessage, LanguageModel } from 'ai'
+import { GatewayInternalServerError } from '@ai-sdk/gateway'
+import { UIMessage, LanguageModel, RetryError } from 'ai'
 import { messagesRepository } from 'db/repository'
 import { nanoid } from 'nanoid'
 
@@ -42,6 +43,20 @@ export async function POST(req: Request) {
       const userMessage = messages.slice(-1)[0]
       const assistantMessage = finishedObject.messages.slice(-1)[0]
       saveMessages(conversationId, userMessage, assistantMessage)
+    },
+    onError: (error) => {
+      if (error instanceof GatewayInternalServerError) {
+        switch (error.statusCode) {
+          case 403:
+            return 'Free tier does not support this model'
+          default:
+            return 'Something went wrong'
+        }
+      }
+      if (error instanceof RetryError) {
+        return 'Free tier requests on this model are rate-limited'
+      }
+      return 'Something went wrong'
     }
   })
 }

@@ -17,6 +17,7 @@
     "format": "prettier --write ."
   },
   "dependencies": {
+    "@ai-sdk/gateway": "^3.0.133",
     "@ai-sdk/react": "^3.0.210",
     "@streamdown/cjk": "^1.0.3",
     "@streamdown/code": "^1.1.1",
