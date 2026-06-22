@@ -7,8 +7,6 @@ export const env = createEnv({
 
     PORT: z.coerce.number().default(3001),
 
-    INGEST_SERVICE_URL: z.url(),
-
     INGEST_SERVICE_CORS_ORIGIN: z.url(),
 
     DATABASE_URL: z.url(),
