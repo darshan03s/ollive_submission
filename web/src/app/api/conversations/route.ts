@@ -12,3 +12,21 @@ export const GET = async (req: Request) => {
 
   return NextResponse.json(conversations)
 }
+
+export const POST = async (req: Request) => {
+  const userId = req.headers.get('X-User-Id')
+
+  if (!userId) {
+    return NextResponse.json({ error: 'User ID is required' }, { status: 400 })
+  }
+
+  const { id, title } = await req.json()
+
+  if (!id) {
+    return NextResponse.json({ error: 'Conversation ID is required' }, { status: 400 })
+  }
+
+  const [conversation] = await conversationsRepository.create({ id, userId, title })
+
+  return NextResponse.json(conversation ?? { id, userId, title }, { status: 201 })
+}

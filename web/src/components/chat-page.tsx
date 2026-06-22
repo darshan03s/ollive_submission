@@ -12,6 +12,7 @@ import { nanoid } from 'nanoid'
 import { LocalStorage } from '@/lib/local-storage'
 import { useRouter } from 'next/navigation'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { ConversationType } from 'db/types'
 
 const chatTransport = new DefaultChatTransport({ api: '/api/chat' })
 const PENDING_CHAT_KEY = 'pendingChat'
@@ -19,6 +20,41 @@ const PENDING_CHAT_KEY = 'pendingChat'
 type PendingChat = {
   text: string
   model: Model['model']
+}
+
+const getPendingChat = (): PendingChat | null => {
+  if (typeof window === 'undefined') {
+    return null
+  }
+
+  const raw = sessionStorage.getItem(PENDING_CHAT_KEY)
+
+  if (!raw) {
+    return null
+  }
+
+  try {
+    return JSON.parse(raw) as PendingChat
+  } catch {
+    return null
+  }
+}
+
+const createConversation = async (userId: string, id: string, title: string) => {
+  const res = await fetch('/api/conversations', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-User-Id': userId
+    },
+    body: JSON.stringify({ id, title })
+  })
+
+  if (!res.ok) {
+    throw new Error('Failed to create conversation')
+  }
+
+  return res.json() as Promise<ConversationType>
 }
 
 const getMessages = async (conversationId: string): Promise<UIMessage[]> => {
@@ -33,26 +69,15 @@ const getMessages = async (conversationId: string): Promise<UIMessage[]> => {
 
 const ChatPage = ({ conversationId }: { conversationId?: string }) => {
   const [model, setModel] = useState<Model['model']>(() => {
-    if (typeof window === 'undefined') {
-      return models[0].model
-    }
-
-    const pending = JSON.parse(sessionStorage.getItem(PENDING_CHAT_KEY)!) as PendingChat
-
-    if (!pending?.model) {
-      return models[0].model
-    }
-    return pending.model
+    const pending = getPendingChat()
+    return pending?.model ?? models[0].model
   })
 
   const [modelSelectorOpen, setModelSelectorOpen] = useState(false)
   const queryClient = useQueryClient()
   const { messages, sendMessage, status, setMessages } = useChat({
     transport: chatTransport,
-    id: conversationId,
-    onFinish: () => {
-      queryClient.invalidateQueries({ queryKey: ['conversations'] })
-    }
+    id: conversationId
   })
   const router = useRouter()
   const { data: messagesHistory, isLoading: isMessagesLoading } = useQuery({
@@ -98,7 +123,9 @@ const ChatPage = ({ conversationId }: { conversationId?: string }) => {
 
       const userId = LocalStorage.getUserId()
 
-      const title = message.text.trim().split(/\s+/).slice(0, 10).join(' ')
+      if (!userId) {
+        return
+      }
 
       sendMessage(
         { text: message.text },
@@ -106,14 +133,12 @@ const ChatPage = ({ conversationId }: { conversationId?: string }) => {
           body: {
             model: selectedModelData.model,
             userInput: message.text,
-            conversationId: id,
-            userId,
-            title
+            conversationId: id
           }
         }
       )
     },
-    [conversationId, selectedModelData.model, sendMessage]
+    [conversationId, selectedModelData.model, sendMessage, router]
   )
 
   useEffect(() => {
@@ -121,15 +146,40 @@ const ChatPage = ({ conversationId }: { conversationId?: string }) => {
       return
     }
 
-    const pendingChat = JSON.parse(sessionStorage.getItem(PENDING_CHAT_KEY)!) as PendingChat
+    const pendingChat = getPendingChat()
 
-    if (!pendingChat) {
+    if (!pendingChat?.text) {
       return
     }
 
-    handleSubmit({ text: pendingChat.text, files: [] })
     sessionStorage.removeItem(PENDING_CHAT_KEY)
-  }, [conversationId, handleSubmit])
+
+    const userId = LocalStorage.getUserId()
+
+    if (!userId) {
+      return
+    }
+
+    const title = pendingChat.text.trim().split(/\s+/).slice(0, 10).join(' ')
+
+    createConversation(userId, conversationId, title)
+      .then((conversation) => {
+        queryClient.setQueryData<ConversationType[]>(['conversations'], (old) => {
+          if (!old) {
+            return [conversation]
+          }
+
+          if (old.some((c) => c.id === conversation.id)) {
+            return old
+          }
+
+          return [conversation, ...old]
+        })
+
+        handleSubmit({ text: pendingChat.text, files: [] })
+      })
+      .catch(console.error)
+  }, [conversationId, handleSubmit, queryClient])
 
   return (
     <Main className="flex flex-col h-[calc(100vh-var(--header-height))]">

@@ -1,6 +1,6 @@
 import { sdk } from '@/sdk'
 import { UIMessage, LanguageModel } from 'ai'
-import { conversationsRepository, messagesRepository } from 'db/repository'
+import { messagesRepository } from 'db/repository'
 import { nanoid } from 'nanoid'
 
 type ChatRequestBody = {
@@ -8,8 +8,6 @@ type ChatRequestBody = {
   model: LanguageModel
   userInput: string
   conversationId: string
-  userId: string
-  title: string
 }
 
 async function saveMessages(
@@ -35,14 +33,7 @@ async function saveMessages(
 }
 
 export async function POST(req: Request) {
-  const { messages, model, userInput, conversationId, userId, title }: ChatRequestBody =
-    await req.json()
-
-  await conversationsRepository.create({
-    id: conversationId,
-    userId: userId,
-    title: title
-  })
+  const { messages, model, userInput, conversationId }: ChatRequestBody = await req.json()
 
   const result = await sdk(model, messages, userInput, conversationId, req.signal)
 
