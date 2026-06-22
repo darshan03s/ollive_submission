@@ -11,11 +11,7 @@ export const env = createEnv({
 
     DATABASE_URL: z.url(),
 
-    REDIS_URL: z.url(),
-
-    REDIS_HOST: z.string(),
-
-    REDIS_PORT: z.coerce.number()
+    REDIS_URL: z.url()
   },
 
   runtimeEnv: process.env,

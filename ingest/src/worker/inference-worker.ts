@@ -9,8 +9,7 @@ export const inferenceWorker = new Worker(
   },
   {
     connection: {
-      host: env.REDIS_HOST,
-      port: env.REDIS_PORT
+      url: env.REDIS_URL
     }
   }
 )
