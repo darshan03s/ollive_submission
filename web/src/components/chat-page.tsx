@@ -14,7 +14,12 @@ import { useRouter } from 'next/navigation'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 
 const chatTransport = new DefaultChatTransport({ api: '/api/chat' })
-const PENDING_USER_INPUT_KEY = 'pendingUserInput'
+const PENDING_CHAT_KEY = 'pendingChat'
+
+type PendingChat = {
+  text: string
+  model: Model['model']
+}
 
 const getMessages = async (conversationId: string): Promise<UIMessage[]> => {
   const res = await fetch(`/api/messages?conversationId=${conversationId}`, {
@@ -71,7 +76,10 @@ const ChatPage = ({ conversationId }: { conversationId?: string }) => {
       const id = conversationId ?? nanoid()
 
       if (!conversationId) {
-        sessionStorage.setItem(PENDING_USER_INPUT_KEY, message.text)
+        sessionStorage.setItem(
+          PENDING_CHAT_KEY,
+          JSON.stringify({ text: message.text, model: selectedModelData.model })
+        )
         router.push(`/conversation/${id}`)
         return
       }
@@ -101,14 +109,20 @@ const ChatPage = ({ conversationId }: { conversationId?: string }) => {
       return
     }
 
-    const pendingUserInput = sessionStorage.getItem(PENDING_USER_INPUT_KEY)
+    const pendingChat = JSON.parse(sessionStorage.getItem(PENDING_CHAT_KEY)!) as PendingChat
 
-    if (!pendingUserInput) {
+    if (!pendingChat) {
       return
     }
 
-    sessionStorage.removeItem(PENDING_USER_INPUT_KEY)
-    handleSubmit({ text: pendingUserInput, files: [] })
+    const selectedModel = pendingChat.model
+
+    if (selectedModel) {
+      setModel(selectedModel as Model['model'])
+    }
+
+    handleSubmit({ text: pendingChat.text, files: [] })
+    sessionStorage.removeItem(PENDING_CHAT_KEY)
   }, [conversationId, handleSubmit])
 
   return (
