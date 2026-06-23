@@ -9,10 +9,12 @@ export const env = createEnv({
     DATABASE_URL: z.url()
   },
   client: {
-    NEXT_PUBLIC_APP_URL: z.url()
+    NEXT_PUBLIC_APP_URL: z.url(),
+    NEXT_PUBLIC_INGEST_SERVICE_URL: z.url()
   },
   runtimeEnv: {
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
+    NEXT_PUBLIC_INGEST_SERVICE_URL: process.env.NEXT_PUBLIC_INGEST_SERVICE_URL,
     APP_URL: process.env.APP_URL,
     AI_GATEWAY_API_KEY: process.env.AI_GATEWAY_API_KEY,
     INGEST_SERVICE_URL: process.env.INGEST_SERVICE_URL,
